@@ -121,8 +121,8 @@ struct Sphere {
 // Constants for viewport and canvas
 const VIEWPORT_SIZE: f64 = 1.0;
 const PROJECTION_PLANE_D: f64 = 1.0;
-const CANVAS_WIDTH: u32 = 600;
-const CANVAS_HEIGHT: u32 = 600;
+const CANVAS_WIDTH: u32 = 200;
+const CANVAS_HEIGHT: u32 = 200;
 
 // Function to convert canvas coordinates to viewport coordinates
 fn canvas_to_viewport(x: i32, y: i32) -> Vec3 {
