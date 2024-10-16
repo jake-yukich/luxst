@@ -15,7 +15,7 @@ const CANVAS_HEIGHT: u32 = 400;
 fn canvas_to_viewport(x: i32, y: i32) -> Vec3 {
     Vec3::new(
         x as f64 * VIEWPORT_SIZE / CANVAS_WIDTH as f64,
-        -y as f64 * VIEWPORT_SIZE / CANVAS_HEIGHT as f64, // Note the negation here
+        -y as f64 * VIEWPORT_SIZE / CANVAS_HEIGHT as f64,
         PROJECTION_PLANE_D,
     )
 }

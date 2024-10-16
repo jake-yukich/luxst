@@ -20,6 +20,23 @@ impl Vec3 {
     pub fn sub(&self, other: &Vec3) -> Vec3 {
         Vec3::new(self.x - other.x, self.y - other.y, self.z - other.z)
     }
+
+    pub fn add(&self, other: &Vec3) -> Vec3 {
+        Vec3::new(self.x + other.x, self.y + other.y, self.z + other.z)
+    }
+
+    pub fn scale(&self, t: f64) -> Vec3 {
+        Vec3::new(self.x * t, self.y * t, self.z * t)
+    }
+
+    pub fn normalize(&self) -> Vec3 {
+        let length = self.length();
+        self.scale(1.0 / length)
+    }
+
+    pub fn length(&self) -> f64 {
+        (self.x * self.x + self.y * self.y + self.z * self.z).sqrt()
+    }
 }
 
 pub struct Color {
@@ -28,9 +45,59 @@ pub struct Color {
     pub b: u8,
 }
 
-// Define a sphere structure
+impl Color {
+    pub fn new(r: u8, g: u8, b: u8) -> Self {
+        Color { r, g, b }
+    }
+
+    pub fn scale(&self, t: f64) -> Color {
+        Color::new(
+            (self.r as f64 * t).min(255.0) as u8,
+            (self.g as f64 * t).min(255.0) as u8,
+            (self.b as f64 * t).min(255.0) as u8,
+        )
+    }
+}
 pub struct Sphere {
     pub center: Vec3,
     pub radius: f64,
     pub color: Color,
+}
+
+pub enum LightType {
+    Ambient,
+    Directional { direction: Vec3 },
+    Point { position: Vec3 },
+}
+
+pub struct Light {
+    pub light_type: LightType,
+    pub intensity: f64,
+    pub color: Color,
+}
+
+impl Light {
+    pub fn new_ambient(intensity: f64, color: Color) -> Self {
+        Light {
+            light_type: LightType::Ambient,
+            intensity,
+            color,
+        }
+    }
+
+    pub fn new_directional(direction: Vec3, intensity: f64, color: Color) -> Self {
+        Light {
+            light_type: LightType::Directional { direction },
+            intensity,
+            color,
+        }
+    }
+
+    pub fn new_point(position: Vec3, intensity: f64, color: Color) -> Self {
+        Light {
+            light_type: LightType::Point { position },
+            intensity,
+            color,
+        }
+    }
 }

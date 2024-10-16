@@ -1,7 +1,7 @@
 /*
 run commands, e.g.
    cargo run --features basic
-   cargo run --features lighting
+   cargo run --features lights
    cargo run --features reflections
 */
 
