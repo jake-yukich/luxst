@@ -17,6 +17,6 @@ Add some lights and diffuse reflections:
 ##
 
 TODO:
-- [ ] lights
+- [x] lights
 - [ ] reflections and shadows
 - [ ] more to come...
