@@ -17,6 +17,8 @@ Add some lights and diffuse reflections:
 ##
 
 TODO:
-- [x] lights
+- [x] ~~lights~~
 - [ ] reflections and shadows
+- [ ] better comments, readability
+- [ ] parallelization
 - [ ] more to come...
