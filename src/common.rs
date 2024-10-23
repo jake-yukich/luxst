@@ -58,10 +58,39 @@ impl Color {
         )
     }
 }
+
 pub struct Sphere {
     pub center: Vec3,
     pub radius: f64,
     pub color: Color,
+}
+
+pub fn generate_default_spheres() -> Vec<Sphere> {
+    // Define spheres in the scene
+    let spheres = vec![
+        Sphere {
+            center: Vec3::new(0.0, -1.0, 3.0),
+            radius: 1.0,
+            color: Color { r: 255, g: 0, b: 0 },
+        },
+        Sphere {
+            center: Vec3::new(2.0, 0.0, 4.0),
+            radius: 1.0,
+            color: Color { r: 0, g: 0, b: 255 },
+        },
+        Sphere {
+            center: Vec3::new(-2.0, 0.0, 4.0),
+            radius: 1.0,
+            color: Color { r: 0, g: 255, b: 0 },
+        },
+        Sphere {
+            center: Vec3::new(0.0, -5001.0, 0.0),
+            radius: 5000.0,
+            color: Color { r: 255, g: 255, b: 0 },
+        },
+    ];
+
+    spheres
 }
 
 pub enum LightType {
