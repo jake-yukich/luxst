@@ -2,7 +2,7 @@
 basic ray tracing + lights
 */
 
-use crate::common::*;
+use crate::common::{self, *};
 use image::{ImageBuffer, Rgb};
 
 // Constants for viewport and canvas
