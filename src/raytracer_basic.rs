@@ -79,6 +79,11 @@ pub fn main() {
             radius: 1.0,
             color: Color { r: 0, g: 255, b: 0 },
         },
+        Sphere {
+            center: Vec3::new(0.0, -5001.0, 0.0),
+            radius: 5000.0,
+            color: Color { r: 255, g: 255, b: 0 },
+        },
     ];
 
     // Create an image buffer
