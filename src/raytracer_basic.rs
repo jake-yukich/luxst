@@ -1,51 +1,31 @@
-/*
-basic ray tracing
-*/
+//! Basic ray tracing
+//!
+//! This module contains a simple ray tracer that:
+//! - ...
+//! - ...
 
 use crate::common::{self, *};
 use image::{ImageBuffer, Rgb};
 
-// Constants for viewport and canvas
-const VIEWPORT_SIZE: f64 = 1.0;
-const PROJECTION_PLANE_D: f64 = 1.0;
-const CANVAS_WIDTH: u32 = 400;
-const CANVAS_HEIGHT: u32 = 400;
-
-// Function to convert canvas coordinates to viewport coordinates
-fn canvas_to_viewport(x: i32, y: i32) -> Vec3 {
-    Vec3::new(
-        x as f64 * VIEWPORT_SIZE / CANVAS_WIDTH as f64,
-        -y as f64 * VIEWPORT_SIZE / CANVAS_HEIGHT as f64,
-        PROJECTION_PLANE_D,
-    )
-}
-
-// Function to intersect a ray with a sphere
-fn intersect_sphere(origin: &Vec3, direction: &Vec3, sphere: &Sphere) -> (f64, f64) {
-    let r = sphere.radius;
-    let co = origin.sub(&sphere.center);
-
-    let a = direction.dot(direction);
-    let b = 2.0 * co.dot(direction);
-    let c = co.dot(&co) - r * r;
-
-    let discriminant: f64 = b * b - 4.0 * a * c;
-    if discriminant < 0.0 {
-        (f64::INFINITY, f64::INFINITY)
-    } else {
-        let t1 = (-b + discriminant.sqrt()) / (2.0 * a);
-        let t2 = (-b - discriminant.sqrt()) / (2.0 * a);
-        (t1, t2)
-    }
-}
-
-// Function to trace a ray and find the color of the intersected object
-fn trace<'a>(origin: &Vec3, direction: &Vec3, t_min: f64, t_max: f64, spheres: &'a [Sphere]) -> &'a Color {
+/// Trace a ray through the scene and return the color of the closest object/intersection.
+///
+/// # Arguments
+///
+/// * `origin` - The origin in 3D space, (0, 0, 0), and the assumed camera position.
+/// * `direction` - The direction of the ray.
+/// * `t_min` - The minimum distance to consider for intersections.
+/// * `t_max` - The maximum distance to consider for intersections.
+/// * `spheres` - The spheres in the scene.
+///
+/// # Returns
+///
+/// Returns the color of the first intersected object, or white if no intersection is found.
+fn trace(origin: &Vec3, direction: &Vec3, t_min: f64, t_max: f64, spheres: &[Sphere]) -> Color {
     let mut closest_t = f64::INFINITY;
     let mut closest_sphere = None;
 
     for sphere in spheres {
-        let (t1, t2) = intersect_sphere(origin, direction, sphere);
+        let (t1, t2) = common::geometry::intersect_ray_sphere(origin, direction, sphere);
         if t1 >= t_min && t1 <= t_max && t1 < closest_t {
             closest_t = t1;
             closest_sphere = Some(sphere);
@@ -57,27 +37,27 @@ fn trace<'a>(origin: &Vec3, direction: &Vec3, t_min: f64, t_max: f64, spheres: &
     }
 
     closest_sphere
-        .map(|sphere| &sphere.color)
-        .unwrap_or(&Color { r: 255, g: 255, b: 255 }) // Background color (white)
+        .map(|sphere| sphere.material.color)
+        .unwrap_or(Color::new(255, 255, 255)) // white background
 }
 
+/// Entry point for the basic ray tracer.
+///
+/// Creates a scene with default spheres and traces rays through it,
+/// saving the output as a PNG image.
 pub fn main() {
-    // Generate default spheres
-    let spheres = common::generate_default_spheres();
-
-    // Create an image buffer
-    let mut img = ImageBuffer::new(CANVAS_WIDTH, CANVAS_HEIGHT);
+    let scene = common::scene::Scene::basic_scene();
+    let mut img = ImageBuffer::new(common::config::CANVAS_WIDTH, common::config::CANVAS_HEIGHT);
     
     let origin = Vec3::new(0.0, 0.0, 0.0);
     for (x, y, pixel) in img.enumerate_pixels_mut() {
-        let direction = canvas_to_viewport(
-            x as i32 - (CANVAS_WIDTH as i32 / 2),
-            y as i32 - (CANVAS_HEIGHT as i32 / 2)
+        let direction = common::geometry::canvas_to_viewport(
+            x as i32 - (common::config::CANVAS_WIDTH as i32 / 2),
+            y as i32 - (common::config::CANVAS_HEIGHT as i32 / 2)
         );
-        let color = trace(&origin, &direction, 1.0, f64::INFINITY, &spheres);
+        let color = trace(&origin, &direction, 1.0, f64::INFINITY, &scene.spheres);
         *pixel = Rgb([color.r, color.g, color.b]);
     }
 
-    // Save image
     img.save("basic.png").unwrap();
 }
