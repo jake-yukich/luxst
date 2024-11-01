@@ -1,4 +1,4 @@
-// Common structures and functions
+//! Core data structures and utilities for ray tracing.
 
 use std::f64;
 
@@ -39,6 +39,7 @@ impl Vec3 {
     }
 }
 
+#[derive(Clone, Copy)]
 pub struct Color {
     pub r: u8,
     pub g: u8,
@@ -59,38 +60,53 @@ impl Color {
     }
 }
 
+pub struct Material {
+    pub color: Color,
+    pub specular: Option<f64>,
+}
+
 pub struct Sphere {
     pub center: Vec3,
     pub radius: f64,
-    pub color: Color,
+    pub material: Material,
 }
 
 pub fn generate_default_spheres() -> Vec<Sphere> {
     // Define spheres in the scene
-    let spheres = vec![
+    vec![
         Sphere {
             center: Vec3::new(0.0, -1.0, 3.0),
             radius: 1.0,
-            color: Color { r: 255, g: 0, b: 0 },
+            material: Material {
+                color: Color::new(255, 0, 0), // red
+                specular: None,
+            },
         },
         Sphere {
             center: Vec3::new(2.0, 0.0, 4.0),
             radius: 1.0,
-            color: Color { r: 0, g: 0, b: 255 },
+            material: Material {
+                color: Color::new(0, 0, 255), // blue
+                specular: None,
+            },
         },
         Sphere {
             center: Vec3::new(-2.0, 0.0, 4.0),
             radius: 1.0,
-            color: Color { r: 0, g: 255, b: 0 },
+            material: Material {
+                color: Color::new(0, 255, 0), // green
+                specular: None,
+            },
         },
         Sphere {
             center: Vec3::new(0.0, -5001.0, 0.0),
             radius: 5000.0,
-            color: Color { r: 255, g: 255, b: 0 },
+            material: Material {
+                color: Color::new(255, 255, 0), // yellow
+                specular: None,
+            },
         },
-    ];
-
-    spheres
+    ]
 }
 
 pub enum LightType {
@@ -127,6 +143,70 @@ impl Light {
             light_type: LightType::Point { position },
             intensity,
             color,
+        }
+    }
+}
+
+pub fn generate_default_lights() -> Vec<Light> {
+    vec![
+        Light::new_ambient(0.2, Color::new(255, 255, 255)),
+        Light::new_directional(Vec3::new(1.0, 4.0, 4.0), 0.2, Color::new(255, 255, 255)),
+        Light::new_point(Vec3::new(2.0, 1.0, 0.0), 0.6, Color::new(255, 255, 255)),
+    ]
+}
+
+pub mod config {
+    pub const VIEWPORT_SIZE: f64 = 1.0;
+    pub const PROJECTION_PLANE_D: f64 = 1.0;
+    pub const CANVAS_WIDTH: u32 = 400;
+    pub const CANVAS_HEIGHT: u32 = 400;
+}
+
+pub mod geometry {
+    use super::*;
+
+    pub fn canvas_to_viewport(x: i32, y: i32) -> Vec3 {
+        Vec3::new(
+            x as f64 * config::VIEWPORT_SIZE / config::CANVAS_WIDTH as f64,
+            -y as f64 * config::VIEWPORT_SIZE / config::CANVAS_HEIGHT as f64,
+            config::PROJECTION_PLANE_D,
+        )
+    }
+
+    pub fn intersect_ray_sphere(origin: &Vec3, direction: &Vec3, sphere: &Sphere) -> (f64, f64) {
+        let r = sphere.radius;
+        let co = origin.sub(&sphere.center);
+
+        let a = direction.dot(direction);
+        let b = 2.0 * co.dot(direction);
+        let c = co.dot(&co) - r * r;
+
+        let discriminant = b * b - 4.0 * a * c;
+        if discriminant < 0.0 {
+            (f64::INFINITY, f64::INFINITY)
+        } else {
+            let t1 = (-b + discriminant.sqrt()) / (2.0 * a);
+            let t2 = (-b - discriminant.sqrt()) / (2.0 * a);
+            (t1, t2)
+        }
+    }
+}
+
+pub mod scene {
+    use super::*;
+    
+    pub struct Scene {
+        pub spheres: Vec<Sphere>,
+        pub lights: Vec<Light>,
+        // pub camera: Camera, // TODO
+    }
+
+    impl Scene {
+        pub fn basic_scene() -> Self {
+            Scene {
+                spheres: generate_default_spheres(),
+                lights: generate_default_lights(),
+            }
         }
     }
 }
