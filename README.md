@@ -1,7 +1,8 @@
 # Luxst
-
+### Motivation
 Luxst is a simple ray tracer implemented in Rust. It currently serves as an entrypoint into both computer graphics algorithms and the Rust language. Maybe one day it'll be a fully-fledged, production-ready, and efficient ray tracer.
 
+### Render progression
 Basic ray-traced scene:
 
 <p align="center">
@@ -17,10 +18,13 @@ Lights and diffuse reflections:
 ##
 
 TODO:
-- [x] ~~lights~~
-- [x] ~~better common module organization~~
-- [ ] better comments, readability
-- [ ] reflections
-- [ ] shadows
-- [ ] parallelization
-- [ ] more to come...
+* [x] ~~lights~~
+* [x] ~~better common module organization~~
+* [ ] better comments, readability
+* [ ] reflections
+* [ ] shadows
+* [ ] parallelization
+* [ ] more to come...
+
+### Math
+* [ ] add math diagrams
