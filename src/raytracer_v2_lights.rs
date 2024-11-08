@@ -10,7 +10,7 @@ fn compute_lighting(point: &Vec3, normal: &Vec3, lights: &[Light]) -> f64 {
             LightType::Ambient => light.intensity,
             LightType::Point { position } => {
                 let direction = position.sub(point);
-                // calculate_diffuse_intensity(normal, &direction, intensity)
+                // calculate_diffuse_intensity(normal, &direction, light.intensity)
                 let n_dot_l = normal.dot(&direction);
                 if n_dot_l > 0.0 {
                     light.intensity * n_dot_l / (normal.length() * direction.length())
@@ -19,7 +19,7 @@ fn compute_lighting(point: &Vec3, normal: &Vec3, lights: &[Light]) -> f64 {
                 }
             },
             LightType::Directional { direction } => {
-                // calculate_diffuse_intensity(normal, direction, intensity)
+                // calculate_diffuse_intensity(normal, direction, light.intensity)
                 let n_dot_l = normal.dot(direction);
                 if n_dot_l > 0.0 {
                     light.intensity * n_dot_l / (normal.length() * direction.length())
@@ -34,11 +34,10 @@ fn compute_lighting(point: &Vec3, normal: &Vec3, lights: &[Light]) -> f64 {
 /// Calculate the diffuse lighting intensity based on the normal and light direction
 // fn calculate_diffuse_intensity(normal: &Vec3, direction: &Vec3, intensity: f64) -> f64 {
 //     let n_dot_l = normal.dot(direction);
-//     if n_dot_l > 0.0 {
-//         intensity * n_dot_l / (normal.length() * direction.length())
-//     } else {
-//         0.0
+//     if n_dot_l <= 0.0 {
+//         return 0.0;
 //     }
+//     intensity * n_dot_l / (normal.length() * direction.length())
 // }
 
 /// Trace a ray through the scene and compute the color at the intersection point.
