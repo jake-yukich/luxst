@@ -33,9 +33,9 @@ TODO:
 * [x] ~~lights~~
 * [x] ~~better common module organization~~
 * [x] ~~specular reflections~~
-* [ ] shadows
+* [x] ~~shadows~~
 * [ ] parallelization
 * [ ] more to come...
 
 ### Math
-* [ ] add math diagrams
+* [ ] add diagrams
