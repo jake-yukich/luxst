@@ -3,6 +3,7 @@
 use crate::common::{self, *};
 use image::{ImageBuffer, Rgb};
 
+/// Compute lighting intensity at a point.
 fn compute_lighting(point: &Vec3, normal: &Vec3, lights: &[Light]) -> f64 {
     lights.iter().fold(0.0, |intensity, light| {
         intensity + match &light.light_type {
@@ -24,6 +25,7 @@ fn compute_lighting(point: &Vec3, normal: &Vec3, lights: &[Light]) -> f64 {
     })
 }
 
+/// Trace a ray through the scene and compute the color at the intersection point.
 fn trace(origin: &Vec3, direction: &Vec3, t_min: f64, t_max: f64, spheres: &[Sphere], lights: &[Light]) -> Color {
     let mut closest_t = f64::INFINITY;
     let mut closest_sphere = None;
@@ -50,6 +52,7 @@ fn trace(origin: &Vec3, direction: &Vec3, t_min: f64, t_max: f64, spheres: &[Sph
         .unwrap_or(Color::new(255, 255, 255)) // white background
 }
 
+/// Entry point for ray tracing with lights and diffuse reflections.
 pub fn main() {
     let scene = common::scene::Scene::basic_scene();
     let mut img = ImageBuffer::new(common::config::CANVAS_WIDTH, common::config::CANVAS_HEIGHT);
@@ -64,5 +67,5 @@ pub fn main() {
         *pixel = Rgb([color.r, color.g, color.b]);
     }
 
-    img.save("lights.png").unwrap();
+    img.save("img/lights.png").unwrap();
 }

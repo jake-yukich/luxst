@@ -1,8 +1,4 @@
 //! Basic ray tracing
-//!
-//! This module contains a simple ray tracer that:
-//! - ...
-//! - ...
 
 use crate::common::{self, *};
 use image::{ImageBuffer, Rgb};
@@ -41,7 +37,7 @@ fn trace(origin: &Vec3, direction: &Vec3, t_min: f64, t_max: f64, spheres: &[Sph
         .unwrap_or(Color::new(255, 255, 255)) // white background
 }
 
-/// Entry point for the basic ray tracer.
+/// Entry point for basic ray tracing.
 ///
 /// Creates a scene with default spheres and traces rays through it,
 /// saving the output as a PNG image.
@@ -59,5 +55,5 @@ pub fn main() {
         *pixel = Rgb([color.r, color.g, color.b]);
     }
 
-    img.save("basic.png").unwrap();
+    img.save("img/basic.png").unwrap();
 }
