@@ -21,6 +21,12 @@ Specular reflections:
     <img src="img/specular.png" alt="Specular Reflections" width="250"/>
 </p>
 
+Shadows:
+
+<p align="center">
+    <img src="img/shadows.png" alt="Shadows" width="250"/>
+</p>
+
 ##
 
 TODO:

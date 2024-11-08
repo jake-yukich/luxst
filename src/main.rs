@@ -9,6 +9,7 @@ mod common;
 mod raytracer_basic;
 mod raytracer_v2_lights;
 mod raytracer_v3_specular;
+mod raytracer_v4_shadows;
 
 fn main() {
     #[cfg(feature = "basic")]
@@ -24,5 +25,10 @@ fn main() {
     #[cfg(feature = "specular")]
     {
         raytracer_v3_specular::main();
+    }
+
+    #[cfg(feature = "shadows")]
+    {
+        raytracer_v4_shadows::main();
     }
 }
