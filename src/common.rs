@@ -62,7 +62,7 @@ impl Color {
 
 pub struct Material {
     pub color: Color,
-    pub specular: Option<f64>,
+    pub specular: Option<f64>, // e.g. 500 for shiny, -1 for matte
 }
 
 pub struct Sphere {
@@ -72,7 +72,6 @@ pub struct Sphere {
 }
 
 pub fn generate_default_spheres() -> Vec<Sphere> {
-    // Define spheres in the scene
     vec![
         Sphere {
             center: Vec3::new(0.0, -1.0, 3.0),
@@ -95,7 +94,7 @@ pub fn generate_default_spheres() -> Vec<Sphere> {
             radius: 1.0,
             material: Material {
                 color: Color::new(0, 255, 0), // green
-                specular: Some(10.0), // a bitshiny
+                specular: Some(10.0), // a bit shiny
             },
         },
         Sphere {
@@ -208,7 +207,6 @@ pub mod scene {
     pub struct Scene {
         pub spheres: Vec<Sphere>,
         pub lights: Vec<Light>,
-        // pub camera: Camera, // TODO
     }
 
     impl Scene {
