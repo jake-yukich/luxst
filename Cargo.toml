@@ -10,3 +10,4 @@ image = "0.24.6"
 default = ["basic"]
 basic = []
 lights = []
+specular = []

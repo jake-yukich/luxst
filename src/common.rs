@@ -79,7 +79,7 @@ pub fn generate_default_spheres() -> Vec<Sphere> {
             radius: 1.0,
             material: Material {
                 color: Color::new(255, 0, 0), // red
-                specular: None,
+                specular: Some(500.0), // shiny
             },
         },
         Sphere {
@@ -87,7 +87,7 @@ pub fn generate_default_spheres() -> Vec<Sphere> {
             radius: 1.0,
             material: Material {
                 color: Color::new(0, 0, 255), // blue
-                specular: None,
+                specular: Some(500.0), // shiny
             },
         },
         Sphere {
@@ -95,7 +95,7 @@ pub fn generate_default_spheres() -> Vec<Sphere> {
             radius: 1.0,
             material: Material {
                 color: Color::new(0, 255, 0), // green
-                specular: None,
+                specular: Some(10.0), // a bitshiny
             },
         },
         Sphere {
@@ -103,7 +103,7 @@ pub fn generate_default_spheres() -> Vec<Sphere> {
             radius: 5000.0,
             material: Material {
                 color: Color::new(255, 255, 0), // yellow
-                specular: None,
+                specular: Some(1000.0), // very shiny
             },
         },
     ]
@@ -165,6 +165,16 @@ pub mod config {
 pub mod geometry {
     use super::*;
 
+    /// Convert canvas coordinates to viewport coordinates.
+    ///
+    /// # Arguments
+    ///
+    /// * `x` - The x-coordinate of the canvas (image buffer), assumed to be centered
+    /// * `y` - The y-coordinate of the canvas (image buffer), assumed to be centered
+    ///
+    /// # Returns
+    ///
+    /// Returns the viewport coordinates, with z = distance to projection plane (viewport).
     pub fn canvas_to_viewport(x: i32, y: i32) -> Vec3 {
         Vec3::new(
             x as f64 * config::VIEWPORT_SIZE / config::CANVAS_WIDTH as f64,

@@ -15,13 +15,18 @@ Lights and diffuse reflections:
     <img src="img/lights.png" alt="Diffuse Reflections" width="250"/>
 </p>
 
+Specular reflections:
+
+<p align="center">
+    <img src="img/specular.png" alt="Specular Reflections" width="250"/>
+</p>
+
 ##
 
 TODO:
 * [x] ~~lights~~
 * [x] ~~better common module organization~~
-* [ ] better comments, readability
-* [ ] reflections
+* [x] ~~specular reflections~~
 * [ ] shadows
 * [ ] parallelization
 * [ ] more to come...
