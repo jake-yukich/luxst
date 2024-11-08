@@ -6,13 +6,13 @@ luxst is a simple ray tracer implemented in Rust. Maybe one day it'll be a fully
 Basic ray-traced scene:
 
 <p align="center">
-    <img src="basic.png" alt="Basic Raytracing Output" width="250"/>
+    <img src="img/basic.png" alt="Basic Raytracing Output" width="250"/>
 </p>
 
 Lights and diffuse reflections:
 
 <p align="center">
-    <img src="lights.png" alt="Diffuse Reflections" width="250"/>
+    <img src="img/lights.png" alt="Diffuse Reflections" width="250"/>
 </p>
 
 ##
