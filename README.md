@@ -10,8 +10,8 @@ luxst is a ray tracer implemented in Rust
     <table>
         <tr>
             <td><img src="img/basic.png" width="200"/><br><i>basic scene</i></td>
-            <td><img src="img/lights.png" width="200"/><br><i>+ diffuse reflections</i></td>
-            <td><img src="img/specular.png" width="200"/><br><i>+ specular reflections</i></td>
+            <td><img src="img/lights.png" width="200"/><br><i>+ diffuse light</i></td>
+            <td><img src="img/specular.png" width="200"/><br><i>+ specular</i></td>
             <td><img src="img/shadows.png" width="200"/><br><i>+ shadows</i></td>
         </tr>
         <tr>
@@ -25,7 +25,7 @@ luxst is a ray tracer implemented in Rust
 TODO:
 * [x] ~~lights~~
 * [x] ~~better common module organization~~
-* [x] ~~specular reflections~~
+* [x] ~~specular~~
 * [x] ~~shadows~~
 * [x] ~~reflections~~
 * [ ] parallelization
