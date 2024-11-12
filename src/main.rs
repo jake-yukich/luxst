@@ -10,6 +10,7 @@ mod raytracer_basic;
 mod raytracer_v2_lights;
 mod raytracer_v3_specular;
 mod raytracer_v4_shadows;
+mod raytracer_v5_reflections;
 
 fn main() {
     #[cfg(feature = "basic")]
@@ -30,5 +31,10 @@ fn main() {
     #[cfg(feature = "shadows")]
     {
         raytracer_v4_shadows::main();
+    }
+
+    #[cfg(feature = "reflections")]
+    {
+        raytracer_v5_reflections::main();
     }
 }

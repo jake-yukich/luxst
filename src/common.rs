@@ -58,11 +58,17 @@ impl Color {
             (self.b as f64 * t).min(255.0) as u8,
         )
     }
+
+    // TODO: might need saturating add here
+    pub fn add(&self, other: &Color) -> Color {
+        Color::new(self.r + other.r, self.g + other.g, self.b + other.b)
+    }
 }
 
 pub struct Material {
     pub color: Color,
-    pub specular: Option<f64>, // e.g. 500 for shiny, -1 for matte
+    pub specular: Option<f64>,
+    pub reflective: Option<f64>,
 }
 
 pub struct Sphere {
@@ -79,6 +85,7 @@ pub fn generate_default_spheres() -> Vec<Sphere> {
             material: Material {
                 color: Color::new(255, 0, 0), // red
                 specular: Some(500.0), // shiny
+                reflective: Some(0.2), // a bit reflective
             },
         },
         Sphere {
@@ -87,6 +94,7 @@ pub fn generate_default_spheres() -> Vec<Sphere> {
             material: Material {
                 color: Color::new(0, 0, 255), // blue
                 specular: Some(500.0), // shiny
+                reflective: Some(0.3),
             },
         },
         Sphere {
@@ -95,6 +103,7 @@ pub fn generate_default_spheres() -> Vec<Sphere> {
             material: Material {
                 color: Color::new(0, 255, 0), // green
                 specular: Some(10.0), // a bit shiny
+                reflective: Some(0.4),
             },
         },
         Sphere {
@@ -103,6 +112,7 @@ pub fn generate_default_spheres() -> Vec<Sphere> {
             material: Material {
                 color: Color::new(255, 255, 0), // yellow
                 specular: Some(1000.0), // very shiny
+                reflective: Some(0.5),
             },
         },
     ]

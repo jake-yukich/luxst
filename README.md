@@ -5,9 +5,6 @@
 ### Motivation
 luxst is a ray tracer implemented in Rust
 
-### Usage
-...
-
 ### Render progression
 <div align="center">
     <table>
@@ -16,6 +13,9 @@ luxst is a ray tracer implemented in Rust
             <td><img src="img/lights.png" width="200"/><br><i>+ diffuse reflections</i></td>
             <td><img src="img/specular.png" width="200"/><br><i>+ specular reflections</i></td>
             <td><img src="img/shadows.png" width="200"/><br><i>+ shadows</i></td>
+        </tr>
+        <tr>
+            <td><img src="img/reflections.png" width="200"/><br><i>+ reflections</i></td>
         </tr>
     </table>
 </div>
@@ -27,6 +27,7 @@ TODO:
 * [x] ~~better common module organization~~
 * [x] ~~specular reflections~~
 * [x] ~~shadows~~
+* [x] ~~reflections~~
 * [ ] parallelization
 * [ ] more to come...
 

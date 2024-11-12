@@ -1,4 +1,4 @@
-//! ... + shadows
+//! ... + reflections
 
 use crate::common::{self, *};
 use image::{ImageBuffer, Rgb};
@@ -65,25 +65,56 @@ fn calculate_specular_intensity(normal: &Vec3, light_dir: &Vec3, view: &Vec3, sp
     0.0
 }
 
+/// Reflect a ray off a surface
+fn reflect_ray(normal: &Vec3, ray: &Vec3) -> Vec3 {
+    normal.scale(2.0 * normal.dot(ray)).sub(ray)
+}
+
 /// Trace a ray through the scene and compute the color at the intersection point.
-fn trace(origin: &Vec3, direction: &Vec3, t_min: f64, t_max: f64, spheres: &[Sphere], lights: &[Light]) -> Color {
+fn trace(origin: &Vec3, direction: &Vec3, t_min: f64, t_max: f64, spheres: &[Sphere], lights: &[Light], recursion_depth: u32) -> Color {
     let (closest_sphere, closest_t) = closest_intersection(origin, direction, t_min, t_max, spheres);
 
     closest_sphere
         .map(|sphere| {
             let point = origin.add(&direction.scale(closest_t));
             let normal = point.sub(&sphere.center).normalize();
-            let lighting_intensity = compute_lighting(
-                &point,
-                &normal,
-                &direction.scale(-1.0),  // View direction (opposite of ray direction)
-                sphere.material.specular,
-                lights,
-                spheres
-            );
-            sphere.material.color.scale(lighting_intensity)
+            
+            // Calculate local color
+            let local_color = {
+                let lighting_intensity = compute_lighting(
+                    &point,
+                    &normal,
+                    &direction.scale(-1.0),
+                    sphere.material.specular,
+                    lights,
+                    spheres
+                );
+                sphere.material.color.scale(lighting_intensity)
+            };
+
+            let r = sphere.material.reflective.unwrap_or(0.0);
+            
+            if recursion_depth <= 0 || r <= 0.0 {
+                local_color
+            } else {
+                let reflected_ray = reflect_ray(&normal, &direction.scale(-1.0));
+                
+                // Recursive call
+                let reflected_color = trace(
+                    &point,
+                    &reflected_ray,
+                    0.001,
+                    f64::INFINITY,
+                    spheres,
+                    lights,
+                    recursion_depth - 1
+                );
+
+                // Blend local and reflected colors based on reflectivity
+                local_color.scale(1.0 - r).add(&reflected_color.scale(r))
+            }
         })
-        .unwrap_or(Color::new(255, 255, 255)) // white background
+        .unwrap_or(Color::new(0, 0, 0)) // black background
 }
 
 /// Find the closest intersection between a ray and all spheres in the scene.
@@ -106,7 +137,7 @@ fn closest_intersection<'a>(origin: &Vec3, direction: &Vec3, t_min: f64, t_max: 
     (closest_sphere, closest_t)
 }
 
-/// Main function to run the ray tracer with shadows.
+/// Main function to run the ray tracer with reflections.
 pub fn main() {
     let scene = common::scene::Scene::basic_scene();
     let mut img = ImageBuffer::new(common::config::CANVAS_WIDTH, common::config::CANVAS_HEIGHT);
@@ -117,9 +148,9 @@ pub fn main() {
             x as i32 - (common::config::CANVAS_WIDTH as i32 / 2),
             y as i32 - (common::config::CANVAS_HEIGHT as i32 / 2)
         );
-        let color = trace(&origin, &direction, 1.0, f64::INFINITY, &scene.spheres, &scene.lights);
+        let color = trace(&origin, &direction, 1.0, f64::INFINITY, &scene.spheres, &scene.lights, 3);
         *pixel = Rgb([color.r, color.g, color.b]);
     }
 
-    img.save("img/shadows.png").unwrap();
+    img.save("img/reflections.png").unwrap();
 }
