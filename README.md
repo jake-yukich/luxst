@@ -3,7 +3,7 @@
 ![luxst](img/basic_thru_shadows.png)
 
 ### Motivation
-luxst is a ray tracer implemented in Rust
+luxst is a ray tracer implemented in Rust, for fun
 
 ### Render progression
 <div align="center">
